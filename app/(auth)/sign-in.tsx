@@ -82,7 +82,7 @@ const SignIn = () => {
 						</Text>
 
 						<Text className="text-2xl text-center text-text mt-10 font-bold">
-							LOGIN
+							SIGN IN
 						</Text>
 					</View>
 
