@@ -77,7 +77,7 @@ const SignIn = () => {
 					}}
 				>
 					<View className="items-center -mt-20 justify-center">
-						<Text className="text-3xl text-primary font-bold text-center">
+						<Text className="text-5xl text-primary font-bold text-center">
 							RIPE SENSEI
 						</Text>
 
