@@ -1,21 +1,16 @@
 import { images } from "@/constant/images";
-import { useAuth } from "@/context/auth-context";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
 import { Image, Text, View } from "react-native";
 
-export default function Index() {
-	const { authState } = useAuth();
-	const [loading, setLoading] = React.useState(false);
-
+export default function Welcome() {
 	const router = useRouter();
-	if (!authState?.authenticated) {
-		setLoading(true);
+
+	useEffect(() => {
 		setTimeout(() => {
-			// router.push("/(auth)/sign-in");
-			setLoading(false);
+			router.push("/(auth)/sign-in");
 		}, 1500);
-	}
+	});
 	return (
 		<View className="flex-1 items-center justify-center bg-background">
 			<View className="flex flex-col gap-4 justify-center items-center">
