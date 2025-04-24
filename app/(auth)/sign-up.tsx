@@ -2,9 +2,14 @@ import { CustomButton, InputField, Loading } from "@/components";
 import { useAuth } from "@/context/auth-context";
 import { useRouter } from "expo-router";
 import React from "react";
-import { Dimensions, ScrollView, Text, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+	Dimensions,
+	SafeAreaView,
+	ScrollView,
+	Text,
+	TouchableOpacity,
+	View,
+} from "react-native";
 
 const SignUp = () => {
 	const [disable, setDisable] = React.useState(false);
@@ -17,8 +22,8 @@ const SignUp = () => {
 		email: "",
 		password: "",
 	});
+
 	const { onRegister } = useAuth();
-	const router = useRouter();
 
 	React.useEffect(() => {
 		checkingForm();
@@ -68,12 +73,13 @@ const SignUp = () => {
 		return <Loading />;
 	}
 
-	const handleRoute = () => {
-		router.push("/(auth)/sign-in");
-	};
+	const router = useRouter();
 
+	const handleRoute = () => {
+		router.push("/sign-in");
+	};
 	return (
-		<SafeAreaView className="bg-primary h-full">
+		<SafeAreaView className="bg-background h-full">
 			<ScrollView>
 				<View
 					className="w-full flex justify-center h-full px-4 my-6"
