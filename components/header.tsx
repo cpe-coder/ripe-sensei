@@ -1,22 +1,8 @@
 import { icon } from "@/constant/icon";
-import { images } from "@/constant/images";
-import { useAuth } from "@/context/auth-context";
 import { DrawerActions } from "@react-navigation/native";
 import { useNavigation } from "expo-router";
 import React from "react";
-import { Image, Pressable, Text, View } from "react-native";
-
-const HeaderTitle = () => {
-	const { userData } = useAuth();
-	return (
-		<View className="flex-row gap-4 justify-center py-4 items-center">
-			<Image resizeMode="contain" className="w-10 h-10" source={images.Logo} />
-			<Text className="text-2xl font-bold text-left text-white">
-				{userData ? userData.name : "Ripe Sensei"}
-			</Text>
-		</View>
-	);
-};
+import { Image, Pressable, View } from "react-native";
 
 const HeaderRight = () => {
 	const navigation = useNavigation();
@@ -39,4 +25,4 @@ const HeaderRight = () => {
 	);
 };
 
-export default { HeaderTitle, HeaderRight };
+export default { HeaderRight };
