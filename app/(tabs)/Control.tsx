@@ -1,12 +1,12 @@
 import React from "react";
 import { Text, View } from "react-native";
 
-const Controls = () => {
+const Control = () => {
 	return (
 		<View>
-			<Text>Controls</Text>
+			<Text>Control</Text>
 		</View>
 	);
 };
 
-export default Controls;
+export default Control;
