@@ -2,18 +2,32 @@ import { icon } from "@/constant/icon";
 import { useAuth } from "@/context/auth-context";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { ArrowLeft } from "lucide-react-native";
 import React from "react";
-import { Image, Modal, Pressable, Text, View } from "react-native";
+import {
+	Image,
+	Modal,
+	Pressable,
+	Text,
+	TouchableOpacity,
+	View,
+} from "react-native";
+import DrawerIcon from "./drawer-icon";
 
 const Settings = () => {
 	const [visible, setVisible] = React.useState(false);
 	const { userImage, userData } = useAuth();
 	return (
-		<View className="flex items-center justify-end">
-			<Pressable onPress={() => setVisible((prev) => !prev)}>
-				<Ionicons name="settings" size={24} color="white" />
-			</Pressable>
+		<View className="flex mt-10 border-secondary border-t pt-6">
+			<TouchableOpacity
+				style={{
+					borderRadius: 12,
+				}}
+				className="flex-row gap-3.5 px-[16px] py-[13px] items-center font-bold"
+				onPress={() => setVisible((prev) => !prev)}
+			>
+				<DrawerIcon color="white" icon={icon.settings} />;
+				<Text className="text-text">Settings</Text>
+			</TouchableOpacity>
 
 			<Modal
 				transparent
@@ -24,7 +38,7 @@ const Settings = () => {
 				<View className=" bg-background w-screen h-screen">
 					<View className="flex p-4 flex-row gap-2 items-center justify-start">
 						<Pressable onPress={() => setVisible(false)} className=" mr-5">
-							<ArrowLeft />
+							<Ionicons name="arrow-back" size={24} color="white" />
 						</Pressable>
 						<Text className="text-text font-bold text-xl">Settings</Text>
 					</View>

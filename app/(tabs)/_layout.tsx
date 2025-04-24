@@ -71,8 +71,8 @@ const TabsLayout = () => {
 						headerTintColor: "white",
 						tabBarIcon: ({ color, focused }) => (
 							<MaterialIcons
+								name="gamepad"
 								size={28}
-								name="perm-contact-cal"
 								color={color}
 								focusable={focused}
 							/>

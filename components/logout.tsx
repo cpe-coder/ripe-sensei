@@ -7,7 +7,7 @@ const Logout = () => {
 	return (
 		<Pressable
 			onPress={onLogout}
-			className="active:bg-gray-200/20 focus:bg-gray-200/30 mb-4 p-4"
+			className="active:bg-gray-200/20 focus:bg-gray-200/30 mb-4 p-4 "
 		>
 			<Text className="text-center text-white">Logout</Text>
 		</Pressable>

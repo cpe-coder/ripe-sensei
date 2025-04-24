@@ -16,16 +16,13 @@ export default function RootLayout() {
 			<Drawer
 				screenOptions={{
 					drawerStyle: {
-						backgroundColor: "#161622",
+						backgroundColor: "#0a0f1c",
 					},
 				}}
 				drawerContent={(props) => (
 					<View className="flex-1">
 						<DrawerContentScrollView {...props}>
-							<View className="flex flex-row justify-between items-center pb-4 w-full">
-								<ProfileInfo />
-								<Settings />
-							</View>
+							<ProfileInfo />
 							<DrawerItem
 								label="Home"
 								onPress={() => route.navigate("/Home")}
@@ -34,8 +31,8 @@ export default function RootLayout() {
 								}}
 								focused={pathName == "/Home" && true}
 								inactiveTintColor="white"
-								activeBackgroundColor="#40404a"
-								activeTintColor="#ff5757"
+								activeBackgroundColor="#002b2e"
+								activeTintColor="#00ffb2"
 								style={{
 									borderRadius: 12,
 									margin: 0,
@@ -48,17 +45,21 @@ export default function RootLayout() {
 								icon={({ color }) => {
 									return <DrawerIcon color={color} icon={icon.control} />;
 								}}
-								focused={pathName == "/Contact" && true}
+								focused={pathName == "/Control" && true}
 								inactiveTintColor="white"
-								activeBackgroundColor="#40404a"
-								activeTintColor="#ff5757"
+								activeBackgroundColor="#002b2e"
+								activeTintColor="#00ffb2"
 								style={{
 									borderRadius: 12,
 									margin: 0,
 									padding: 0,
 								}}
 							/>
+							<View>
+								<Settings />
+							</View>
 						</DrawerContentScrollView>
+
 						<Logout />
 					</View>
 				)}
