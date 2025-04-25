@@ -1,18 +1,25 @@
-// import { useAuth } from "@/context/auth-context";
-// import { Redirect } from "expo-router";
 import { Header } from "@/components";
 import { useAuth } from "@/context/auth-context";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { Tabs, useRouter } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import React from "react";
 
 const TabsLayout = () => {
 	const { authState } = useAuth();
-	const router = useRouter();
-	if (!authState?.authenticated) {
-		router.push("/sign-in");
+	const [isAuthenticated, setIsAthenticated] = React.useState(false);
+
+	React.useEffect(() => {
+		if (!authState?.authenticated) {
+			setIsAthenticated(true);
+			return;
+		}
+		setIsAthenticated(false);
 		return;
+	});
+
+	if (isAuthenticated) {
+		return <Redirect href={"/sign-in"} />;
 	}
 
 	return (
