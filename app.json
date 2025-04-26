@@ -27,13 +27,11 @@
 			"expo-router",
 			[
 				"expo-splash-screen",
-				"expo-screen-orientation",
 				{
 					"image": "./assets/images/splash-icon.png",
 					"imageWidth": 200,
 					"resizeMode": "contain",
-					"backgroundColor": "#ffffff",
-					"initialOrientation": "DEFAULT"
+					"backgroundColor": "#ffffff"
 				}
 			]
 		],
