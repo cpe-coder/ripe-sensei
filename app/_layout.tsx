@@ -1,4 +1,4 @@
-import { DrawerIcon, Logout, ProfileInfo } from "@/components";
+import { DrawerIcon, Logout, ProfileInfo, Settings } from "@/components";
 import { icon } from "@/constant/icon";
 import { AuthProvider } from "@/context/auth-context";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
@@ -55,9 +55,7 @@ export default function RootLayout() {
 									padding: 0,
 								}}
 							/>
-							{/* <View>
-								<Settings />
-							</View> */}
+							<Settings />
 						</DrawerContentScrollView>
 
 						<Logout />

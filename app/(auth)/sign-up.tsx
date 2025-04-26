@@ -22,6 +22,7 @@ const SignUp = () => {
 		email: "",
 		password: "",
 	});
+	const router = useRouter();
 
 	const { onRegister } = useAuth();
 
@@ -72,8 +73,6 @@ const SignUp = () => {
 	if (isLoading) {
 		return <Loading />;
 	}
-
-	const router = useRouter();
 
 	const handleRoute = () => {
 		router.push("/sign-in");

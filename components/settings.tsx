@@ -104,9 +104,9 @@ const Settings = () => {
 							onPress={() => chooseFromLibrary()}
 							className="flex-row px-4 py-2 justify-start items-center gap-5 active:bg-gray-300/20 transition-all duration-300 active:transition-all active:duration-300"
 						>
-							<View className="bg-secondText rounded-full p-3">
+							<Text className="bg-secondText rounded-full p-3">
 								<Entypo name="camera" size={24} color="white" />
-							</View>
+							</Text>
 							<Text className=" text-lg text-text">Change Profile Image</Text>
 						</Pressable>
 					</View>
