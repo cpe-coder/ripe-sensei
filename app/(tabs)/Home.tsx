@@ -37,7 +37,7 @@ const Home = () => {
 							data={records}
 							keyExtractor={(item, index) => `${item.id}-${index}`}
 							renderItem={({ item }) => (
-								<View className="flex-col mt-4 px-4 py-4 bg-customBlack rounded-lg">
+								<View className="flex-col mt-4 px-4 py-4 bg-[#002b2e] gap-2 rounded-lg">
 									<Text className="text-xl font-bold text-text mt-1">
 										{item.date}
 									</Text>
