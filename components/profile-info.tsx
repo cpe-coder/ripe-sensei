@@ -3,7 +3,6 @@ import React from "react";
 import { Image, Text, View } from "react-native";
 
 const ProfileInfo = () => {
-
 	return (
 		<View className=" flex-row justify-center px-4 items-center gap-5 py-8 border-b border-secondary mb-4">
 			<Image

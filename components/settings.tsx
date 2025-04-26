@@ -86,10 +86,7 @@ const Settings = () => {
 						</Text>
 					</View>
 					<View className="py-2">
-						<Pressable
-							onPress={() => console.log("clicked")}
-							className="flex-row px-4 py-2 justify-start items-center gap-5 active:bg-gray-300/20 transition-all duration-300 active:transition-all active:duration-300"
-						>
+						<Pressable className="flex-row px-4 py-2 justify-start items-center gap-5 active:bg-gray-300/20 transition-all duration-300 active:transition-all active:duration-300">
 							<View className="bg-secondText rounded-full p-3">
 								<MaterialIcons name="alternate-email" size={24} color="white" />
 							</View>
@@ -104,9 +101,9 @@ const Settings = () => {
 							onPress={() => chooseFromLibrary()}
 							className="flex-row px-4 py-2 justify-start items-center gap-5 active:bg-gray-300/20 transition-all duration-300 active:transition-all active:duration-300"
 						>
-							<Text className="bg-secondText rounded-full p-3">
+							<View className="bg-secondText rounded-full p-3">
 								<Entypo name="camera" size={24} color="white" />
-							</Text>
+							</View>
 							<Text className=" text-lg text-text">Change Profile Image</Text>
 						</Pressable>
 					</View>
