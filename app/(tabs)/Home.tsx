@@ -19,6 +19,11 @@ const Home = () => {
 		{ id: 3, ripe: "60%", raw: "50%", date: "April 2, 2025 7:58 AM" },
 		{ id: 4, ripe: "60%", raw: "50%", date: "April 2, 2025 7:58 AM" },
 		{ id: 5, ripe: "60%", raw: "50%", date: "April 2, 2025 7:58 AM" },
+		{ id: 6, ripe: "60%", raw: "50%", date: "April 2, 2025 7:58 AM" },
+		{ id: 7, ripe: "60%", raw: "50%", date: "April 2, 2025 7:58 AM" },
+		{ id: 8, ripe: "60%", raw: "50%", date: "April 2, 2025 7:58 AM" },
+		{ id: 9, ripe: "60%", raw: "50%", date: "April 2, 2025 7:58 AM" },
+		{ id: 10, ripe: "60%", raw: "50%", date: "April 2, 2025 7:58 AM" },
 	]);
 	return (
 		<>
@@ -37,7 +42,7 @@ const Home = () => {
 							data={records}
 							keyExtractor={(item, index) => `${item.id}-${index}`}
 							renderItem={({ item }) => (
-								<View className="flex-col mt-4 px-4 py-4 bg-[#002b2e] gap-2 rounded-lg">
+								<View className="flex-col mt-4 px-4 py-4 bg-[#02111f] gap-2 rounded-lg">
 									<Text className="text-xl font-bold text-text mt-1">
 										{item.date}
 									</Text>

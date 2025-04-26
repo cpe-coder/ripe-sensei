@@ -9,7 +9,7 @@ export default function Welcome() {
 	useEffect(() => {
 		setTimeout(() => {
 			router.push("/Home");
-		}, 1500);
+		}, 2000);
 	});
 	return (
 		<View className="flex-1 items-center justify-center bg-background">

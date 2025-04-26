@@ -48,7 +48,6 @@ export const AuthProvider = ({ children }: any) => {
 	}, []);
 
 	useEffect(() => {
-		console.log(userImage.image);
 		const verifyToken = async () => {
 			const token = await SecureStore.getItemAsync(TOKEN_KEY);
 
