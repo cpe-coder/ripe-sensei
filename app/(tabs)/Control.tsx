@@ -5,7 +5,9 @@ import { Text, View } from "react-native";
 const Control = () => {
 	React.useEffect(() => {
 		const unlockScreenOerientation = async () => {
-			await ScreenOrientation.unlockAsync();
+			await ScreenOrientation.lockAsync(
+				ScreenOrientation.OrientationLock.LANDSCAPE
+			);
 		};
 		unlockScreenOerientation();
 	}, []);

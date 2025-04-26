@@ -11,6 +11,7 @@ import "../global.css";
 export default function RootLayout() {
 	const route = useRouter();
 	const pathName = usePathname();
+
 	return (
 		<AuthProvider>
 			<Drawer

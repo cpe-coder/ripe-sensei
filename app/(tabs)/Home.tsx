@@ -1,5 +1,6 @@
 import { Records } from "@/components";
 import { images } from "@/constant/images";
+import * as ScreenOrientation from "expo-screen-orientation";
 import React from "react";
 import {
 	ActivityIndicator,
@@ -25,6 +26,13 @@ const Home = () => {
 		{ id: 9, ripe: "60%", raw: "50%", date: "April 2, 2025 7:58 AM" },
 		{ id: 10, ripe: "60%", raw: "50%", date: "April 2, 2025 7:58 AM" },
 	]);
+
+	React.useEffect(() => {
+		const unlockScreenOerientation = async () => {
+			await ScreenOrientation.lockAsync;
+		};
+		unlockScreenOerientation();
+	}, []);
 	return (
 		<>
 			<SafeAreaView className="flex-1 bg-background">

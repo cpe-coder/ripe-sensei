@@ -65,7 +65,7 @@ const TabsLayout = () => {
 					options={{
 						href: pathName == "/Control" ? null : undefined,
 						headerRight: () => {
-							return pathName == "/Control" ? "" : <Header.HeaderRight />;
+							return <Header.HeaderRight />;
 						},
 						headerStyle: {
 							backgroundColor: "#0a0f1c",
