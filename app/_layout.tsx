@@ -4,13 +4,31 @@ import { AuthProvider } from "@/context/auth-context";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import { usePathname, useRouter } from "expo-router";
 import Drawer from "expo-router/drawer";
+import * as ScreenOrientation from "expo-screen-orientation";
 import React from "react";
 import { View } from "react-native";
 import "../global.css";
 
-export default function RootLayout() {
+export default async function RootLayout() {
 	const route = useRouter();
 	const pathName = usePathname();
+
+	React.useEffect(() => {
+		const unlockScreenOerientation = async () => {
+			if (pathName == "/Control") {
+				await ScreenOrientation.lockAsync(
+					ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
+				);
+			}
+
+			if (pathName == "/Home") {
+				await ScreenOrientation.lockAsync(
+					ScreenOrientation.OrientationLock.PORTRAIT
+				);
+			}
+		};
+		unlockScreenOerientation();
+	});
 
 	return (
 		<AuthProvider>
