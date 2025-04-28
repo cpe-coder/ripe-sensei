@@ -6,18 +6,16 @@ import { useRouter } from "expo-router";
 import * as ScreenOrientation from "expo-screen-orientation";
 import React from "react";
 import {
-	Dimensions,
 	Image,
 	Modal,
 	PanResponder,
 	Text,
 	TouchableOpacity,
-	View,
+	View
 } from "react-native";
 import { WebView } from "react-native-webview";
 
-const { height: screenHeight } = Dimensions.get("window");
-const SLIDER_HEIGHT = 90;
+const SLIDER_HEIGHT = 150;
 const MIN_VALUE = 1000;
 const MAX_VALUE = 2000;
 const MID_VALUE = 1500;
@@ -57,7 +55,7 @@ const Control = () => {
 		onStartShouldSetPanResponder: () => true,
 		onMoveShouldSetPanResponder: () => true,
 		onPanResponderMove: (_, gestureState) => {
-			let newY = position + gestureState.dy * -1; // invert movement
+			let newY = position + gestureState.dy * -1;
 			newY = Math.max(0, Math.min(SLIDER_HEIGHT, newY));
 			setPosition(newY);
 
@@ -69,6 +67,11 @@ const Control = () => {
 		onPanResponderGrant: () => {},
 		onPanResponderRelease: () => {},
 	});
+
+	const handleReset = () => {
+		setValue(MID_VALUE);
+		setPosition(SLIDER_HEIGHT / 2);
+	 };
 
 	return (
 		<>
@@ -126,11 +129,15 @@ const Control = () => {
 						className="w-40 h-40"
 					/>
 					<View className="bg-background/70 rounded-lg px-4 py-2">
-						<Text className="text-lg">{MAX_VALUE}</Text>
-						<Text className="text-lg">{MID_VALUE}</Text>
-						<Text className="text-lg">{MIN_VALUE}</Text>
-					</View>
-					<View className="relative items-center justify-center h-60 w-16 bg-background rounded-full overflow-hidden">
+						<Text className="text-lg text-primary font-semibold">
+							Power: {value}
+						</Text>
+						<View>
+							<TouchableOpacity onPress={handleReset}>
+								<Text className="text-primary shadow-green-300 font-bold text-lg">N</Text>
+							</TouchableOpacity>
+						</View>
+					<View className="relative items-center justify-center h-[150px] w-16 bg-background rounded-full overflow-hidden">
 						<View
 							className="absolute w-2 bg-primary rounded-full h-full"
 							{...panResponder.panHandlers}
