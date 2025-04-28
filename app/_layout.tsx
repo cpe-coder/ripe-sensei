@@ -1,4 +1,3 @@
-
 import { DrawerIcon, Logout, ProfileInfo } from "@/components";
 import { icon } from "@/constant/icon";
 import { AuthProvider } from "@/context/auth-context";
@@ -9,7 +8,7 @@ import React from "react";
 import { View } from "react-native";
 import "../global.css";
 
-export default async function RootLayout() {
+export default function RootLayout() {
 	const route = useRouter();
 	const pathName = usePathname();
 

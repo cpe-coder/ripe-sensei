@@ -82,7 +82,7 @@ export const AuthProvider = ({ children }: any) => {
 			}
 		};
 		verifyToken();
-	});
+	}, []);
 
 	const register = async (name: string, email: string, password: string) => {
 		return await axios.post(`${API_URL}/api/auth/register`, {

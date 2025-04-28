@@ -50,16 +50,15 @@ const Settings = () => {
 		}
 	};
 	return (
-		<View className="flex mt-10 border-secondary border-t pt-6">
+		<View className="flex">
 			<TouchableOpacity
 				style={{
 					borderRadius: 12,
 				}}
-				className="flex-row gap-3.5 px-[16px] py-[13px] items-center font-bold"
+				className="flex-row items-center font-bold"
 				onPress={() => setVisible((prev) => !prev)}
 			>
-				<DrawerIcon color="white" icon={icon.settings} />;
-				<Text className="text-text">Settings</Text>
+				<DrawerIcon color="white" icon={icon.settings} />
 			</TouchableOpacity>
 
 			<Modal
