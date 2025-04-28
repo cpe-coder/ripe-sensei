@@ -1,5 +1,7 @@
 import { Records } from "@/components";
 import { images } from "@/constant/images";
+import { useFocusEffect } from "@react-navigation/native";
+import * as ScreenOrientation from "expo-screen-orientation";
 import React from "react";
 import {
 	ActivityIndicator,
@@ -25,6 +27,14 @@ const Home = () => {
 		{ id: 9, ripe: "60%", raw: "50%", date: "April 2, 2025 7:58 AM" },
 		{ id: 10, ripe: "60%", raw: "50%", date: "April 2, 2025 7:58 AM" },
 	]);
+
+	useFocusEffect(() => {
+		React.useCallback(() => {
+			ScreenOrientation.lockAsync(
+				ScreenOrientation.OrientationLock.PORTRAIT_UP
+			);
+		}, []);
+	});
 
 	return (
 		<>
