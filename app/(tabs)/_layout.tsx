@@ -39,46 +39,50 @@ const TabsLayout = () => {
 				<Tabs.Screen
 					name="Home"
 					options={{
+						href: pathName == "/Control" ? null : undefined,
 						title: "Home",
 						headerRight: () => {
-							return <Header.HeaderRight />;
+							return pathName == "/Control" ? "" : <Header.HeaderRight />;
 						},
 						headerStyle: {
 							backgroundColor: "#0a0f1c",
 						},
 						headerTintColor: "white",
 
-						tabBarIcon: ({ color, focused }) => (
-							<FontAwesome6
-								size={24}
-								name="house"
-								color={color}
-								focusable={focused}
-							/>
-						),
+						tabBarIcon: ({ color, focused }) =>
+							pathName != "/Control" && (
+								<FontAwesome6
+									size={24}
+									name="house"
+									color={color}
+									focusable={focused}
+								/>
+							),
 					}}
 				/>
 				<Tabs.Screen
 					name="Control"
 					options={{
-						title: "Control",
+						href: pathName == "/Control" ? null : undefined,
+						title: pathName == "/Control" ? " " : "",
 
 						headerRight: () => {
-							return <Header.HeaderRight />;
+							return pathName == "/Control" ? "" : <Header.HeaderRight />;
 						},
 						headerStyle: {
 							backgroundColor: "#0a0f1c",
 						},
 						headerTintColor: "white",
 
-						tabBarIcon: ({ color, focused }) => (
-							<MaterialIcons
-								name="gamepad"
-								size={28}
-								color={color}
-								focusable={focused}
-							/>
-						),
+						tabBarIcon: ({ color, focused }) =>
+							pathName != "/Control" && (
+								<MaterialIcons
+									name="gamepad"
+									size={28}
+									color={color}
+									focusable={focused}
+								/>
+							),
 					}}
 				/>
 			</Tabs>
