@@ -64,7 +64,7 @@ const TabsLayout = () => {
 					name="Control"
 					options={{
 						href: pathName == "/Control" ? null : undefined,
-						title: pathName == "/Control" ? " " : "",
+						title: pathName == "/Control" ? " " : "Control",
 
 						headerRight: () => {
 							return pathName == "/Control" ? "" : <Header.HeaderRight />;
