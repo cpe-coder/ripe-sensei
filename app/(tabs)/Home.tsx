@@ -1,8 +1,8 @@
 import { Records } from "@/components";
 import { images } from "@/constant/images";
-import { useFocusEffect } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import * as ScreenOrientation from "expo-screen-orientation";
-import React from "react";
+import React, { useEffect } from "react";
 import {
 	ActivityIndicator,
 	FlatList,
@@ -15,6 +15,7 @@ import {
 const Home = () => {
 	const [isChecking, setIsChecking] = React.useState(false);
 	const [isLoadingMore, setIsLoadingMore] = React.useState(false);
+	const navigation = useNavigation();
 	const [records, setRecords] = React.useState([
 		{ id: 1, ripe: "60%", raw: "50%", date: "April 2, 2025 7:58 AM" },
 		{ id: 2, ripe: "60%", raw: "50%", date: "April 2, 2025 7:58 AM" },
@@ -28,14 +29,19 @@ const Home = () => {
 		{ id: 10, ripe: "60%", raw: "50%", date: "April 2, 2025 7:58 AM" },
 	]);
 
-	useFocusEffect(() => {
-		React.useCallback(() => {
-			ScreenOrientation.lockAsync(
-				ScreenOrientation.OrientationLock.PORTRAIT_UP
-			);
-		}, []);
-	});
+	useEffect(() => {
+		const unsubscribe = navigation.addListener("focus", () => {
+			try {
+				ScreenOrientation.lockAsync(
+					ScreenOrientation.OrientationLock.PORTRAIT_UP
+				);
+			} catch (error) {
+				console.log(error);
+			}
+		});
 
+		return unsubscribe;
+	}, [navigation]);
 	return (
 		<>
 			<SafeAreaView className="flex-1 bg-background">
