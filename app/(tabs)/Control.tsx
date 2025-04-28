@@ -11,7 +11,7 @@ import {
 	PanResponder,
 	Text,
 	TouchableOpacity,
-	View
+	View,
 } from "react-native";
 import { WebView } from "react-native-webview";
 
@@ -71,11 +71,11 @@ const Control = () => {
 	const handleReset = () => {
 		setValue(MID_VALUE);
 		setPosition(SLIDER_HEIGHT / 2);
-	 };
+	};
 
 	return (
 		<>
-			<View className="bg-background flex-1"></View>
+			<View className="bg-background h-screen w-screen"></View>
 			<Modal visible={isVisible} animationType="fade">
 				<View className="flex-row justify-between items-start p-2 absolute z-10 w-full">
 					<TouchableOpacity
@@ -134,18 +134,21 @@ const Control = () => {
 						</Text>
 						<View>
 							<TouchableOpacity onPress={handleReset}>
-								<Text className="text-primary shadow-green-300 font-bold text-lg">N</Text>
+								<Text className="text-primary shadow-green-300 font-bold text-lg">
+									N
+								</Text>
 							</TouchableOpacity>
 						</View>
-					<View className="relative items-center justify-center h-[150px] w-16 bg-background rounded-full overflow-hidden">
-						<View
-							className="absolute w-2 bg-primary rounded-full h-full"
-							{...panResponder.panHandlers}
-						>
+						<View className="relative items-center justify-center h-[150px] w-16 bg-background rounded-full overflow-hidden">
 							<View
-								className="absolute w-8 h-8 bg-secondary rounded-full -left-3"
-								style={{ bottom: position - 10 }}
-							/>
+								className="absolute w-2 bg-primary rounded-full h-full"
+								{...panResponder.panHandlers}
+							>
+								<View
+									className="absolute w-8 h-8 bg-secondary rounded-full -left-3"
+									style={{ bottom: position - 10 }}
+								/>
+							</View>
 						</View>
 					</View>
 				</View>
