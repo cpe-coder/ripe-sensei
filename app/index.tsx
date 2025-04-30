@@ -6,16 +6,14 @@ import { ActivityIndicator, Image, Text, View } from "react-native";
 
 export default function Welcome() {
 	const router = useRouter();
-	const [isReading, setIsReading] = React.useState(false);
-
 	const { checkingAuth } = useAuth();
 
 	React.useEffect(() => {
-		setIsReading(true);
 		if (checkingAuth?.done) {
 			router.push("/Home");
 			return;
 		}
+		return;
 	});
 
 	return (
@@ -30,11 +28,9 @@ export default function Welcome() {
 					resizeMode="contain"
 				/>
 			</View>
-			{isReading && (
-				<View className="absolute bottom-16">
-					<ActivityIndicator size="large" color="#ffffff" />
-				</View>
-			)}
+			<View className="absolute bottom-16">
+				<ActivityIndicator size="large" color="#ffffff" />
+			</View>
 		</View>
 	);
 }

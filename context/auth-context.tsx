@@ -68,6 +68,7 @@ export const AuthProvider = ({ children }: any) => {
 								authenticated: true,
 							});
 							setUserData(res.data.user);
+							setCheckingAuth({ done: true });
 						} else {
 							axios.defaults.headers.common["Authorization"] = "";
 							await SecureStore.deleteItemAsync(TOKEN_KEY);
@@ -85,8 +86,6 @@ export const AuthProvider = ({ children }: any) => {
 			}
 		};
 		verifyToken();
-
-		setCheckingAuth({ done: true });
 	}, []);
 
 	const register = async (name: string, email: string, password: string) => {
