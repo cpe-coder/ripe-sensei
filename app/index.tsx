@@ -1,19 +1,15 @@
 import { images } from "@/constant/images";
-import { useAuth } from "@/context/auth-context";
 import { useRouter } from "expo-router";
 import React from "react";
 import { ActivityIndicator, Image, Text, View } from "react-native";
 
 export default function Welcome() {
 	const router = useRouter();
-	const { checkingAuth } = useAuth();
 
 	React.useEffect(() => {
-		if (checkingAuth?.done) {
+		setTimeout(() => {
 			router.push("/Home");
-			return;
-		}
-		return;
+		}, 3000);
 	});
 
 	return (

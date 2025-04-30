@@ -9,7 +9,6 @@ interface AuthProps {
 	onLogout?: () => Promise<any>;
 	userData?: { id: string | null; name: string | null; email: string | null };
 	userImage?: { image: string | null };
-	checkingAuth?: { done: boolean | null };
 }
 
 const TOKEN_KEY = "TOKEN";
@@ -39,9 +38,6 @@ export const AuthProvider = ({ children }: any) => {
 		email: "",
 	});
 	const [userImage, setUserImage] = useState<{ image: string }>({ image: "" });
-	const [checkingAuth, setCheckingAuth] = useState<{ done: boolean }>({
-		done: false,
-	});
 	useEffect(() => {
 		const getImage = async () => {
 			const image = await SecureStore.getItemAsync("image");
@@ -68,7 +64,6 @@ export const AuthProvider = ({ children }: any) => {
 								authenticated: true,
 							});
 							setUserData(res.data.user);
-							setCheckingAuth({ done: true });
 						} else {
 							axios.defaults.headers.common["Authorization"] = "";
 							await SecureStore.deleteItemAsync(TOKEN_KEY);
@@ -86,7 +81,7 @@ export const AuthProvider = ({ children }: any) => {
 			}
 		};
 		verifyToken();
-	}, []);
+	});
 
 	const register = async (name: string, email: string, password: string) => {
 		return await axios.post(`${API_URL}/api/auth/register`, {
@@ -132,7 +127,6 @@ export const AuthProvider = ({ children }: any) => {
 		authState,
 		userData,
 		userImage,
-		checkingAuth,
 	};
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
