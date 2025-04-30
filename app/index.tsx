@@ -1,16 +1,23 @@
 import { images } from "@/constant/images";
+import { useAuth } from "@/context/auth-context";
 import { useRouter } from "expo-router";
-import React, { useEffect } from "react";
-import { Image, Text, View } from "react-native";
+import React from "react";
+import { ActivityIndicator, Image, Text, View } from "react-native";
 
 export default function Welcome() {
 	const router = useRouter();
+	const [isReading, setIsReading] = React.useState(false);
 
-	useEffect(() => {
-		setTimeout(() => {
+	const { checkingAuth } = useAuth();
+
+	React.useEffect(() => {
+		setIsReading(true);
+		if (checkingAuth?.done) {
 			router.push("/Home");
-		}, 2000);
+			return;
+		}
 	});
+
 	return (
 		<View className="flex-1 items-center justify-center bg-background">
 			<View className="flex flex-col gap-4 justify-center items-center">
@@ -23,6 +30,11 @@ export default function Welcome() {
 					resizeMode="contain"
 				/>
 			</View>
+			{isReading && (
+				<View className="absolute bottom-16">
+					<ActivityIndicator size="large" color="#ffffff" />
+				</View>
+			)}
 		</View>
 	);
 }
