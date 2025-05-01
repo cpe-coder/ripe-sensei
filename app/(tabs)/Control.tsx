@@ -8,6 +8,7 @@ import * as ScreenOrientation from "expo-screen-orientation";
 import { ref, set } from "firebase/database";
 import React from "react";
 import {
+	Animated,
 	Image,
 	Modal,
 	PanResponder,
@@ -27,8 +28,9 @@ const Control = () => {
 	const [isVisible, setIsVisible] = React.useState(false);
 	const router = useRouter();
 	const { userData } = useAuth();
-	const [value, setValue] = React.useState(MID_VALUE);
+	const [power, setPower] = React.useState(MID_VALUE);
 	const [position, setPosition] = React.useState(SLIDER_HEIGHT / 2);
+	const [rotation] = React.useState(new Animated.Value(45));
 
 	const ripeValue = "80%";
 	const rawValue = "20%";
@@ -49,7 +51,8 @@ const Control = () => {
 	}, [navigation]);
 
 	React.useEffect(() => {
-		setPower();
+		console.log("Wheel: ", rotation);
+		setActivePower();
 	});
 
 	const handleBackPress = () => {
@@ -68,25 +71,45 @@ const Control = () => {
 			const newValue = Math.round(
 				MIN_VALUE + (newY / SLIDER_HEIGHT) * (MAX_VALUE - MIN_VALUE)
 			);
-			setValue(newValue);
+			setPower(newValue);
 		},
 		onPanResponderGrant: () => {},
 		onPanResponderRelease: () => {},
 	});
 
-	const setPower = async () => {
+	const steeringWheelResponder = PanResponder.create({
+		onStartShouldSetPanResponder: () => true,
+		onMoveShouldSetPanResponder: () => true,
+		onPanResponderMove: (_, gestureState) => {
+			const { dx } = gestureState;
+
+			let newRotation = Math.max(0, Math.min(90, 45 + dx * 0.2));
+			rotation.setValue(newRotation);
+		},
+		onPanResponderRelease: () => {
+			Animated.timing(rotation, {
+				toValue: 45,
+				duration: 300,
+				useNativeDriver: false,
+			}).start();
+		},
+	});
+
+	const setActivePower = async () => {
 		try {
 			const valueRef = ref(database, "Controls/esc");
-			await set(valueRef, value);
+			await set(valueRef, power);
 		} catch (error) {
 			console.log("Error setting power value:", error);
 		}
 	};
 
 	const handleReset = () => {
-		setValue(MID_VALUE);
+		setPower(MID_VALUE);
 		setPosition(SLIDER_HEIGHT / 2);
 	};
+
+	const activeWheel = async () => {};
 
 	return (
 		<>
@@ -137,12 +160,27 @@ const Control = () => {
 					/>
 				</View>
 				<View className="flex-row justify-between items-end p-6 absolute z-10 w-full bottom-0">
-					<Image
-						source={icon.steeringWheel}
-						height={0}
-						width={0}
-						className="w-40 h-40"
-					/>
+					<View
+						className="w-40 h-40 items-center justify-center -rotate-45"
+						{...steeringWheelResponder.panHandlers}
+					>
+						<Animated.Image
+							source={icon.steeringWheel}
+							height={0}
+							width={0}
+							className="w-40 h-40"
+							style={{
+								transform: [
+									{
+										rotate: rotation.interpolate({
+											inputRange: [0, 90],
+											outputRange: ["0deg", "90deg"],
+										}),
+									},
+								],
+							}}
+						/>
+					</View>
 					<TouchableOpacity
 						className="bg-background/70 rounded-md px-3 py-2"
 						onPress={handleReset}
@@ -151,7 +189,7 @@ const Control = () => {
 					</TouchableOpacity>
 					<View className="bg-background/70 items-center justify-center py-2 rounded-lg px-4">
 						<Text className="text-lg text-primary font-semibold mb-2">
-							Power: {value}
+							Power: {power}
 						</Text>
 
 						<View className="relative items-center justify-center h-[150px] w-16 bg-background rounded-lg overflow-hidden">
