@@ -30,7 +30,8 @@ const Control = () => {
 	const { userData } = useAuth();
 	const [power, setPower] = React.useState(MID_VALUE);
 	const [position, setPosition] = React.useState(SLIDER_HEIGHT / 2);
-	const [rotation] = React.useState(new Animated.Value(45));
+	const rotation = React.useRef(new Animated.Value(90)).current;
+	const [wheelDegree, setWheelDegree] = React.useState<number>(90);
 
 	const ripeValue = "80%";
 	const rawValue = "20%";
@@ -52,7 +53,9 @@ const Control = () => {
 
 	React.useEffect(() => {
 		console.log("Wheel: ", rotation);
+		console.log("Wheel: ", wheelDegree);
 		setActivePower();
+		setActiveWheel();
 	});
 
 	const handleBackPress = () => {
@@ -83,13 +86,16 @@ const Control = () => {
 		onPanResponderMove: (_, gestureState) => {
 			const { dx } = gestureState;
 
-			let newRotation = Math.max(0, Math.min(90, 45 + dx * 0.2));
+			let newRotation = Math.round(Math.max(0, Math.min(180, 90 + dx * 0.2)));
+
+			setWheelDegree(newRotation);
+			console.log("kljahsdklfhj", rotation.setValue(newRotation));
 			rotation.setValue(newRotation);
 		},
 		onPanResponderRelease: () => {
 			Animated.timing(rotation, {
-				toValue: 45,
-				duration: 300,
+				toValue: 90,
+				duration: 200,
 				useNativeDriver: false,
 			}).start();
 		},
@@ -103,13 +109,19 @@ const Control = () => {
 			console.log("Error setting power value:", error);
 		}
 	};
+	const setActiveWheel = async () => {
+		try {
+			const valueRef = ref(database, "Controls/wheel");
+			await set(valueRef, wheelDegree);
+		} catch (error) {
+			console.log("Error setting wheel value:", error);
+		}
+	};
 
 	const handleReset = () => {
 		setPower(MID_VALUE);
 		setPosition(SLIDER_HEIGHT / 2);
 	};
-
-	const activeWheel = async () => {};
 
 	return (
 		<>
@@ -161,7 +173,7 @@ const Control = () => {
 				</View>
 				<View className="flex-row justify-between items-end p-6 absolute z-10 w-full bottom-0">
 					<View
-						className="w-40 h-40 items-center justify-center -rotate-45"
+						className="w-40 h-40 items-center justify-center -rotate-90"
 						{...steeringWheelResponder.panHandlers}
 					>
 						<Animated.Image
@@ -173,20 +185,22 @@ const Control = () => {
 								transform: [
 									{
 										rotate: rotation.interpolate({
-											inputRange: [0, 90],
-											outputRange: ["0deg", "90deg"],
+											inputRange: [0, 180],
+											outputRange: ["0deg", "180deg"],
 										}),
 									},
 								],
 							}}
 						/>
 					</View>
-					<TouchableOpacity
-						className="bg-background/70 rounded-md px-3 py-2"
-						onPress={handleReset}
-					>
-						<Text className="font-bold text-xl text-primary">N</Text>
-					</TouchableOpacity>
+					<View className="flex justify-end right-0">
+						<TouchableOpacity
+							className="bg-background/70 rounded-md px-3 py-2"
+							onPress={handleReset}
+						>
+							<Text className="font-bold text-xl text-primary">N</Text>
+						</TouchableOpacity>
+					</View>
 					<View className="bg-background/70 items-center justify-center py-2 rounded-lg px-4">
 						<Text className="text-lg text-primary font-semibold mb-2">
 							Power: {power}
