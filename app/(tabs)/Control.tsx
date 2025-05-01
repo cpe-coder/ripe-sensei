@@ -31,7 +31,7 @@ const Control = () => {
 	const [power, setPower] = React.useState(MID_VALUE);
 	const [position, setPosition] = React.useState(SLIDER_HEIGHT / 2);
 	const rotation = React.useRef(new Animated.Value(90)).current;
-	const [wheelDegree, setWheelDegree] = React.useState<number>(90);
+	const [wheelDegree, setWheelDegree] = React.useState(90);
 
 	const ripeValue = "80%";
 	const rawValue = "20%";
@@ -86,16 +86,15 @@ const Control = () => {
 		onPanResponderMove: (_, gestureState) => {
 			const { dx } = gestureState;
 
-			let newRotation = Math.round(Math.max(0, Math.min(180, 90 + dx * 0.2)));
+			let newRotation = Math.round(Math.max(0, Math.min(180, 90 + dx * 0.5)));
 
-			setWheelDegree(newRotation);
-			console.log("kljahsdklfhj", rotation.setValue(newRotation));
 			rotation.setValue(newRotation);
+			setWheelDegree(newRotation);
 		},
 		onPanResponderRelease: () => {
 			Animated.timing(rotation, {
 				toValue: 90,
-				duration: 200,
+				duration: 100,
 				useNativeDriver: false,
 			}).start();
 		},
