@@ -5,7 +5,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Redirect, Tabs, usePathname } from "expo-router";
 import React from "react";
 
-const TabsLayout = () => {
+export default function TabsLayout() {
 	const { authState } = useAuth();
 	const [isAuthenticated, setIsAthenticated] = React.useState(false);
 	const pathName = usePathname();
@@ -88,6 +88,4 @@ const TabsLayout = () => {
 			</Tabs>
 		</>
 	);
-};
-
-export default TabsLayout;
+}
