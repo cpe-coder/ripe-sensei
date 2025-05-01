@@ -1,16 +1,14 @@
 import { images } from "@/constant/images";
 import { useRouter } from "expo-router";
 import React from "react";
-import { ActivityIndicator, Image, Text, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
 export default function Welcome() {
 	const router = useRouter();
 
-	React.useEffect(() => {
-		setTimeout(() => {
-			router.push("/Home");
-		}, 3000);
-	});
+	const handlePress = () => {
+		router.push("/Home");
+	};
 
 	return (
 		<View className="flex-1 items-center justify-center bg-background">
@@ -25,7 +23,12 @@ export default function Welcome() {
 				/>
 			</View>
 			<View className="absolute bottom-16">
-				<ActivityIndicator size="large" color="#ffffff" />
+				<TouchableOpacity
+					onPress={handlePress}
+					className="bg-secondary rounded-xl py-4 px-20"
+				>
+					<Text className="text-text font-semibold text-xl">Continue</Text>
+				</TouchableOpacity>
 			</View>
 		</View>
 	);

@@ -1,4 +1,4 @@
-import { CustomButton, InputField, Loading } from "@/components";
+import { CustomButton, InputField } from "@/components";
 import { useRouter } from "expo-router";
 import {
 	Dimensions,
@@ -17,7 +17,6 @@ const SignIn = () => {
 	const [isSubmit, setIsSubmit] = React.useState(false);
 	const [errorMessage, setErrorMessage] = React.useState("");
 	const [successMessage, setSuccessMessage] = React.useState("");
-	const [isLoading, setIsLoading] = React.useState(false);
 	const { onLogin } = useAuth();
 	const router = useRouter();
 	const [form, setForm] = React.useState({
@@ -47,7 +46,6 @@ const SignIn = () => {
 					setErrorMessage("");
 					setSuccessMessage(res.data.message);
 					setIsSubmit(false);
-					setIsLoading(true);
 					setTimeout(() => {
 						router.push("/Home");
 					}, 1500);
@@ -58,10 +56,6 @@ const SignIn = () => {
 			}
 		}
 	};
-
-	if (isLoading) {
-		return <Loading />;
-	}
 
 	const handleRoute = () => {
 		router.push("/(auth)/sign-up");
