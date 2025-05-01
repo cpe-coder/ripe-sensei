@@ -1,9 +1,11 @@
 import { icon } from "@/constant/icon";
 import { useAuth } from "@/context/auth-context";
+import database from "@/utils/firebase.config";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import * as ScreenOrientation from "expo-screen-orientation";
+import { ref, set } from "firebase/database";
 import React from "react";
 import {
 	Image,
@@ -15,7 +17,7 @@ import {
 } from "react-native";
 import { WebView } from "react-native-webview";
 
-const SLIDER_HEIGHT = 150;
+const SLIDER_HEIGHT = 100;
 const MIN_VALUE = 1000;
 const MAX_VALUE = 2000;
 const MID_VALUE = 1500;
@@ -46,6 +48,10 @@ const Control = () => {
 		return unsubscribe;
 	}, [navigation]);
 
+	React.useEffect(() => {
+		setPower();
+	});
+
 	const handleBackPress = () => {
 		router.push("/Home");
 		setIsVisible(false);
@@ -67,6 +73,15 @@ const Control = () => {
 		onPanResponderGrant: () => {},
 		onPanResponderRelease: () => {},
 	});
+
+	const setPower = async () => {
+		try {
+			const valueRef = ref(database, "Controls/esc");
+			await set(valueRef, value);
+		} catch (error) {
+			console.log("Error setting power value:", error);
+		}
+	};
 
 	const handleReset = () => {
 		setValue(MID_VALUE);
@@ -104,20 +119,20 @@ const Control = () => {
 							<Text className="text-primary font-bold">{rawValue}</Text>
 						</View>
 					</View>
-					<View className="flex-col items-center justify-center bg-background/70 rounded-lg px-2 py-1">
-						<Text className="text-right text-text font-bold">
+					<View className="flex-col items-start justify-center bg-background/70 rounded-lg px-2 py-1">
+						<Text className="text-left text-text font-bold">
 							{userData && userData.name}
 						</Text>
-						<Text className="text-right text-secondText font-semibold">
+						<Text className="text-left text-secondText font-semibold">
 							{userData && userData.email}
 						</Text>
 					</View>
 				</View>
 				<View className="h-screen w-screen">
 					<WebView
-						className="flex-1"
+						className="flex-1 bg-white"
 						source={{
-							uri: "https://medium.com/@peninangizwenayo/screen-orientation-in-react-native-expo-765ac5248f6d",
+							uri: "https://eos.com/wp-content/uploads/2023/10/indeterminate-tomato-field.jpg.webp",
 						}}
 					/>
 				</View>
@@ -128,24 +143,24 @@ const Control = () => {
 						width={0}
 						className="w-40 h-40"
 					/>
-					<View className="bg-background/70 rounded-lg px-4 py-2">
-						<Text className="text-lg text-primary font-semibold">
+					<TouchableOpacity
+						className="bg-background/70 rounded-md px-3 py-2"
+						onPress={handleReset}
+					>
+						<Text className="font-bold text-xl text-primary">N</Text>
+					</TouchableOpacity>
+					<View className="bg-background/70 items-center justify-center py-2 rounded-lg px-4">
+						<Text className="text-lg text-primary font-semibold mb-2">
 							Power: {value}
 						</Text>
-						<View>
-							<TouchableOpacity onPress={handleReset}>
-								<Text className="text-primary shadow-green-300 font-bold text-lg">
-									N
-								</Text>
-							</TouchableOpacity>
-						</View>
-						<View className="relative items-center justify-center h-[150px] w-16 bg-background rounded-full overflow-hidden">
+
+						<View className="relative items-center justify-center h-[150px] w-16 bg-background rounded-lg overflow-hidden">
 							<View
-								className="absolute w-2 bg-primary rounded-full h-full"
+								className="absolute w-6 rounded-md h-[100px] my-4"
 								{...panResponder.panHandlers}
 							>
 								<View
-									className="absolute w-8 h-8 bg-secondary rounded-full -left-3"
+									className="absolute w-12 h-8 bg-secondary rounded-md -left-3"
 									style={{ bottom: position - 10 }}
 								/>
 							</View>
