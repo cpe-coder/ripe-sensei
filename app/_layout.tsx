@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "expo-router";
 import Drawer from "expo-router/drawer";
 import React from "react";
 import { View } from "react-native";
-import "../global.css";
+import "../styles/global.css";
 
 export default function RootLayout() {
 	const route = useRouter();
