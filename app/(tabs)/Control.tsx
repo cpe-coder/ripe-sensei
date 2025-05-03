@@ -23,7 +23,7 @@ const MIN_VALUE = 1000;
 const MAX_VALUE = 2000;
 const MID_VALUE = 1500;
 
-const Control = () => {
+export default function Control() {
 	const navigation = useNavigation();
 	const [isVisible, setIsVisible] = React.useState(false);
 	const router = useRouter();
@@ -221,6 +221,4 @@ const Control = () => {
 			</Modal>
 		</>
 	);
-};
-
-export default Control;
+}

@@ -12,7 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuth } from "@/context/auth-context";
 import React from "react";
 
-const SignIn = () => {
+export default function SignIn() {
 	const [disable, setDisable] = React.useState(true);
 	const [isSubmit, setIsSubmit] = React.useState(false);
 	const [errorMessage, setErrorMessage] = React.useState("");
@@ -134,6 +134,4 @@ const SignIn = () => {
 			</ScrollView>
 		</SafeAreaView>
 	);
-};
-
-export default SignIn;
+}

@@ -11,7 +11,7 @@ import {
 	View,
 } from "react-native";
 
-const SignUp = () => {
+export default function SignUp() {
 	const [disable, setDisable] = React.useState(false);
 	const [isSubmit, setIsSubmit] = React.useState(false);
 	const [errorMessage, setErrorMessage] = React.useState("");
@@ -150,6 +150,4 @@ const SignUp = () => {
 			</ScrollView>
 		</SafeAreaView>
 	);
-};
-
-export default SignUp;
+}

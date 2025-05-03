@@ -12,7 +12,7 @@ import {
 	View,
 } from "react-native";
 
-const Home = () => {
+export default function Home() {
 	const [isChecking, setIsChecking] = React.useState(false);
 	const [isLoadingMore, setIsLoadingMore] = React.useState(false);
 	const navigation = useNavigation();
@@ -112,6 +112,4 @@ const Home = () => {
 			</SafeAreaView>
 		</>
 	);
-};
-
-export default Home;
+}
