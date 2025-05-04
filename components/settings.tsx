@@ -24,6 +24,7 @@ const Settings = () => {
 	const { userImage, userData } = useAuth();
 	const [mediaPermission, requestMediaPermission] =
 		useMediaLibraryPermissions();
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [refreshing, setRefreshing] = React.useState(false);
 
 	const onRefresh = React.useCallback(() => {
@@ -31,7 +32,7 @@ const Settings = () => {
 		setTimeout(() => {
 			setRefreshing(false);
 		}, 1000);
-	}, [refreshing]);
+	}, []);
 
 	const chooseFromLibrary = async () => {
 		if (!mediaPermission?.granted) {

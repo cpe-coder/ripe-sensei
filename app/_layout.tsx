@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "expo-router";
 import Drawer from "expo-router/drawer";
 import React from "react";
 import { View } from "react-native";
-import "../styles/global.css";
+import "../global.css";
 
 export default function RootLayout() {
 	const route = useRouter();
@@ -30,7 +30,7 @@ export default function RootLayout() {
 								icon={({ color }) => {
 									return <DrawerIcon color={color} icon={icon.home} />;
 								}}
-								focused={pathName == "/Home" && true}
+								focused={pathName === "/Home" && true}
 								inactiveTintColor="white"
 								activeBackgroundColor="#002b2e"
 								activeTintColor="#00ffb2"
@@ -46,7 +46,7 @@ export default function RootLayout() {
 								icon={({ color }) => {
 									return <DrawerIcon color={color} icon={icon.control} />;
 								}}
-								focused={pathName == "/Control" && true}
+								focused={pathName === "/Control" && true}
 								inactiveTintColor="white"
 								activeBackgroundColor="#002b2e"
 								activeTintColor="#00ffb2"
