@@ -11,23 +11,25 @@ export default function Welcome() {
 	};
 
 	return (
-		<View className="flex-1 items-center justify-center bg-background">
+		<View className="flex-1 items-center justify-center bg-background px-8">
 			<View className="flex flex-col gap-4 justify-center items-center">
-				<Text className="text-center text-wrap font-bold text-2xl text-primary">
+				<Text className="text-center text-wrap font-bold text-4xl text-primary">
 					Welcome to Ripe Sensei
 				</Text>
 				<Image
-					className="w-[200px] h-[200px]"
+					className="w-[220px] h-[220px]"
 					source={images.Logo}
 					resizeMode="contain"
 				/>
 			</View>
-			<View className="absolute bottom-16">
+			<View className="absolute bottom-24 w-full">
 				<TouchableOpacity
 					onPress={handlePress}
-					className="bg-secondary rounded-xl py-4 px-20"
+					className="bg-secondary rounded-xl py-5 px-20"
 				>
-					<Text className="text-text font-semibold text-xl">Continue</Text>
+					<Text className="text-text font-semibold text-center text-xl">
+						Continue
+					</Text>
 				</TouchableOpacity>
 			</View>
 		</View>

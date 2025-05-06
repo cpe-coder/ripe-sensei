@@ -17,7 +17,7 @@ export default function TabLayout() {
 		}
 		setIsAthenticated(false);
 		return;
-	});
+	}, [authState]);
 
 	if (isAuthenticated) {
 		return <Redirect href={"/sign-in"} />;
@@ -39,10 +39,10 @@ export default function TabLayout() {
 				<Tabs.Screen
 					name="Home"
 					options={{
-						href: pathName == "/Control" ? null : undefined,
+						href: pathName === "/Control" ? null : undefined,
 						title: "Home",
 						headerRight: () => {
-							return pathName == "/Control" ? "" : <Header.HeaderRight />;
+							return pathName === "/Control" ? "" : <Header.HeaderRight />;
 						},
 						headerStyle: {
 							backgroundColor: "#0a0f1c",
@@ -50,7 +50,7 @@ export default function TabLayout() {
 						headerTintColor: "white",
 
 						tabBarIcon: ({ color, focused }) =>
-							pathName != "/Control" && (
+							pathName !== "/Control" && (
 								<FontAwesome6
 									size={24}
 									name="house"
@@ -63,11 +63,11 @@ export default function TabLayout() {
 				<Tabs.Screen
 					name="Control"
 					options={{
-						href: pathName == "/Control" ? null : undefined,
-						title: pathName == "/Control" ? " " : "Control",
+						href: pathName === "/Control" ? null : undefined,
+						title: pathName === "/Control" ? " " : "Control",
 
 						headerRight: () => {
-							return pathName == "/Control" ? "" : <Header.HeaderRight />;
+							return pathName === "/Control" ? "" : <Header.HeaderRight />;
 						},
 						headerStyle: {
 							backgroundColor: "#0a0f1c",
@@ -75,7 +75,7 @@ export default function TabLayout() {
 						headerTintColor: "white",
 
 						tabBarIcon: ({ color, focused }) =>
-							pathName != "/Control" && (
+							pathName !== "/Control" && (
 								<MaterialIcons
 									name="gamepad"
 									size={28}
