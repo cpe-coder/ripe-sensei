@@ -86,18 +86,11 @@ export default function Control() {
 		onPanResponderMove: (_, gestureState) => {
 			const { dx } = gestureState;
 
-			let newRotation = Math.round(Math.max(0, Math.min(180, 90 + dx * 0.5)));
-
+			let newRotation = Math.round(Math.max(0, Math.min(180, 90 + dx * 0.5))); // Adjust sensitivity with multiplier
 			rotation.setValue(newRotation);
 			setWheelDegree(newRotation);
 		},
-		onPanResponderRelease: () => {
-			Animated.timing(rotation, {
-				toValue: 90,
-				duration: 100,
-				useNativeDriver: false,
-			}).start();
-		},
+		onPanResponderRelease: () => {},
 	});
 
 	const setActivePower = async () => {
@@ -166,7 +159,7 @@ export default function Control() {
 					<WebView
 						className="flex-1 bg-white"
 						source={{
-							uri: "https://eos.com/wp-content/uploads/2023/10/indeterminate-tomato-field.jpg.webp",
+							uri: "http://192.168.43.36/",
 						}}
 					/>
 				</View>
