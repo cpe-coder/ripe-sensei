@@ -15,6 +15,7 @@ import {
 	Text,
 	TouchableOpacity,
 	View,
+	ViewProps,
 } from "react-native";
 import { WebView } from "react-native-webview";
 
@@ -22,6 +23,69 @@ const SLIDER_HEIGHT = 100;
 const MIN_VALUE = 1000;
 const MAX_VALUE = 2000;
 const MID_VALUE = 1500;
+
+function Trootle(props: {
+	power:
+		| string
+		| number
+		| bigint
+		| boolean
+		| React.ReactElement<unknown, string | React.JSXElementConstructor<any>>
+		| Iterable<React.ReactNode>
+		| React.ReactPortal
+		| Promise<
+				| string
+				| number
+				| bigint
+				| boolean
+				| React.ReactPortal
+				| React.ReactElement<unknown, string | React.JSXElementConstructor<any>>
+				| Iterable<React.ReactNode>
+				| null
+				| undefined
+		  >
+		| null
+		| undefined;
+	panHandlers: React.JSX.IntrinsicAttributes &
+		React.JSX.IntrinsicClassAttributes<View> &
+		Readonly<ViewProps>;
+	position: number;
+}) {
+	return (
+		<View className="bg-background/70 items-center justify-center py-2 rounded-lg px-4">
+			<Text className="text-lg text-primary font-semibold mb-2">
+				Power: {props.power}
+			</Text>
+
+			<View className="relative items-center justify-center h-[150px] w-16 bg-background rounded-lg overflow-hidden">
+				<View
+					className="absolute w-6 rounded-md h-[100px] my-4"
+					{...props.panHandlers}
+				>
+					<View
+						className="absolute w-12 h-8 bg-secondary rounded-md -left-3"
+						style={{
+							bottom: props.position - 10,
+						}}
+					/>
+				</View>
+			</View>
+		</View>
+	);
+}
+
+function UserInfo(props: { userData: { name: any; email: any } }) {
+	return (
+		<View className="flex-col items-start justify-center bg-background/70 rounded-lg px-2 py-1">
+			<Text className="text-left text-text font-bold">
+				{props.userData && props.userData.name}
+			</Text>
+			<Text className="text-left text-secondText font-semibold">
+				{props.userData && props.userData.email}
+			</Text>
+		</View>
+	);
+}
 
 export default function Control() {
 	const navigation = useNavigation();
@@ -146,14 +210,11 @@ export default function Control() {
 							<Text className="text-primary font-bold">{rawValue}</Text>
 						</View>
 					</View>
-					<View className="flex-col items-start justify-center bg-background/70 rounded-lg px-2 py-1">
-						<Text className="text-left text-text font-bold">
-							{userData && userData.name}
-						</Text>
-						<Text className="text-left text-secondText font-semibold">
-							{userData && userData.email}
-						</Text>
-					</View>
+					{userData && (
+						<UserInfo
+							userData={{ name: userData.name, email: userData.email }}
+						/>
+					)}
 				</View>
 				<View className="h-screen w-screen">
 					<WebView
@@ -193,23 +254,11 @@ export default function Control() {
 							<Text className="font-bold text-xl text-primary">N</Text>
 						</TouchableOpacity>
 					</View>
-					<View className="bg-background/70 items-center justify-center py-2 rounded-lg px-4">
-						<Text className="text-lg text-primary font-semibold mb-2">
-							Power: {power}
-						</Text>
-
-						<View className="relative items-center justify-center h-[150px] w-16 bg-background rounded-lg overflow-hidden">
-							<View
-								className="absolute w-6 rounded-md h-[100px] my-4"
-								{...panResponder.panHandlers}
-							>
-								<View
-									className="absolute w-12 h-8 bg-secondary rounded-md -left-3"
-									style={{ bottom: position - 10 }}
-								/>
-							</View>
-						</View>
-					</View>
+					<Trootle
+						power={power}
+						position={position}
+						panHandlers={panResponder.panHandlers}
+					></Trootle>
 				</View>
 			</Modal>
 		</>
