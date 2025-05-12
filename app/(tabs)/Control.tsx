@@ -52,7 +52,7 @@ function Trootle(props: {
 	position: number;
 }) {
 	return (
-		<View className="bg-background/70 items-center justify-center py-2 rounded-lg px-4">
+		<View className="bg-background/70 items-center justify-center py-2 rounded-lg px-4 mx-6">
 			<Text className="text-lg text-primary font-semibold mb-2">
 				Power: {props.power}
 			</Text>
@@ -76,7 +76,7 @@ function Trootle(props: {
 
 function UserInfo(props: { userData: { name: any; email: any } }) {
 	return (
-		<View className="flex-col items-start justify-center bg-background/70 rounded-lg px-2 py-1">
+		<View className="flex-col items-start justify-center bg-background/70 rounded-lg px-2 mx-6 py-1">
 			<Text className="text-left text-text font-bold">
 				{props.userData && props.userData.name}
 			</Text>
@@ -183,7 +183,7 @@ export default function Control() {
 		<>
 			<View className="bg-background h-screen w-screen"></View>
 			<Modal visible={isVisible} animationType="fade">
-				<View className="flex-row justify-between items-start p-2 absolute z-10 w-full">
+				<View className="flex-row justify-between items-start px-6 py-2 absolute z-10 w-full">
 					<TouchableOpacity
 						onPress={handleBackPress}
 						className="p-2  bg-background rounded-full"
