@@ -17,6 +17,7 @@ import {
 	View,
 	ViewProps,
 } from "react-native";
+import { TextInput } from "react-native-gesture-handler";
 import { WebView } from "react-native-webview";
 
 const SLIDER_HEIGHT = 100;
@@ -96,6 +97,7 @@ export default function Control() {
 	const [position, setPosition] = React.useState(SLIDER_HEIGHT / 2);
 	const rotation = React.useRef(new Animated.Value(90)).current;
 	const [wheelDegree, setWheelDegree] = React.useState(90);
+	const [esp32Ip, setEsp32Ip] = React.useState("");
 
 	const ripeValue = "80%";
 	const rawValue = "20%";
@@ -118,6 +120,8 @@ export default function Control() {
 	React.useEffect(() => {
 		console.log("Wheel: ", rotation);
 		console.log("Wheel: ", wheelDegree);
+		console.log(esp32Ip);
+
 		setActivePower();
 		setActiveWheel();
 	});
@@ -210,6 +214,14 @@ export default function Control() {
 							<Text className="text-primary font-bold">{rawValue}</Text>
 						</View>
 					</View>
+					<View className="flex-row gap-4">
+						<TextInput
+							className="border rounded-md px-4"
+							placeholder="Enter esp32 camera ip!"
+							value={esp32Ip}
+							onChangeText={(event) => setEsp32Ip(event)}
+						/>
+					</View>
 					{userData && (
 						<UserInfo
 							userData={{ name: userData.name, email: userData.email }}
@@ -220,7 +232,7 @@ export default function Control() {
 					<WebView
 						className="flex-1 bg-white"
 						source={{
-							uri: "http://192.168.43.36/",
+							uri: `http://${esp32Ip}:81/stream`,
 						}}
 					/>
 				</View>
