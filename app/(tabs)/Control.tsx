@@ -17,7 +17,6 @@ import {
 	View,
 	ViewProps,
 } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
 import { WebView } from "react-native-webview";
 
 const SLIDER_HEIGHT = 100;
@@ -97,7 +96,8 @@ export default function Control() {
 	const [position, setPosition] = React.useState(SLIDER_HEIGHT / 2);
 	const rotation = React.useRef(new Animated.Value(90)).current;
 	const [wheelDegree, setWheelDegree] = React.useState(90);
-	const [esp32Ip, setEsp32Ip] = React.useState("");
+	const [lastRotation, setLastRotation] = React.useState(90);
+	const [gestureStartRotation, setGestureStartRotation] = React.useState(90);
 
 	const ripeValue = "80%";
 	const rawValue = "20%";
@@ -120,7 +120,6 @@ export default function Control() {
 	React.useEffect(() => {
 		console.log("Wheel: ", rotation);
 		console.log("Wheel: ", wheelDegree);
-		console.log(esp32Ip);
 
 		setActivePower();
 		setActiveWheel();
@@ -151,14 +150,24 @@ export default function Control() {
 	const steeringWheelResponder = PanResponder.create({
 		onStartShouldSetPanResponder: () => true,
 		onMoveShouldSetPanResponder: () => true,
+		onPanResponderGrant: () => {
+			setGestureStartRotation(lastRotation); // Save rotation at gesture start
+		},
 		onPanResponderMove: (_, gestureState) => {
 			const { dx } = gestureState;
-
-			let newRotation = Math.round(Math.max(0, Math.min(180, 90 + dx * 0.5))); // Adjust sensitivity with multiplier
+			let newRotation = Math.round(
+				Math.max(0, Math.min(180, gestureStartRotation + dx * 1)) // Increase sensitivity if needed
+			);
 			rotation.setValue(newRotation);
 			setWheelDegree(newRotation);
 		},
-		onPanResponderRelease: () => {},
+		onPanResponderRelease: (_, gestureState) => {
+			const { dx } = gestureState;
+			let newRotation = Math.round(
+				Math.max(0, Math.min(180, gestureStartRotation + dx * 1))
+			);
+			setLastRotation(newRotation); // Save the new rotation as lastRotation
+		},
 	});
 
 	const setActivePower = async () => {
@@ -214,14 +223,7 @@ export default function Control() {
 							<Text className="text-primary font-bold">{rawValue}</Text>
 						</View>
 					</View>
-					<View className="flex-row gap-4">
-						<TextInput
-							className="border rounded-md px-4"
-							placeholder="Enter esp32 camera ip!"
-							value={esp32Ip}
-							onChangeText={(event) => setEsp32Ip(event)}
-						/>
-					</View>
+
 					{userData && (
 						<UserInfo
 							userData={{ name: userData.name, email: userData.email }}
@@ -232,7 +234,7 @@ export default function Control() {
 					<WebView
 						className="flex-1 bg-white"
 						source={{
-							uri: `http://${esp32Ip}:81/stream`,
+							uri: "http://192.168.43.36",
 						}}
 					/>
 				</View>
