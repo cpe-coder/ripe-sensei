@@ -12,7 +12,7 @@ const ImageViewer = () => {
 		return () => clearInterval(interval);
 	}, []);
 
-	const uri = `http://192.168.43.191/1280x720.jpg?${tick}`;
+	const uri = `http://192.168.43.191/cam-hi.jpg?${tick}`;
 	const key = tick % 2;
 
 	return (

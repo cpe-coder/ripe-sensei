@@ -17,7 +17,6 @@ import {
 	View,
 	ViewProps,
 } from "react-native";
-import { WebView } from "react-native-webview";
 
 const SLIDER_HEIGHT = 100;
 const MIN_VALUE = 1000;
@@ -96,8 +95,6 @@ export default function Control() {
 	const [position, setPosition] = React.useState(SLIDER_HEIGHT / 2);
 	const rotation = React.useRef(new Animated.Value(90)).current;
 	const [wheelDegree, setWheelDegree] = React.useState(90);
-
-	const streamUrl = "https://www.google.com/";
 
 	const ripeValue = "80%";
 	const rawValue = "20%";
@@ -243,18 +240,7 @@ export default function Control() {
 						/>
 					)}
 				</View>
-				<View className="h-screen w-screen">
-					<WebView
-						source={{ uri: streamUrl }}
-						className="w-full h-full"
-						allowsInlineMediaPlayback
-						mediaPlaybackRequiresUserAction={false}
-						originWhitelist={["*"]}
-						javaScriptEnabled={true}
-						domStorageEnabled={true}
-						mixedContentMode="always"
-					/>
-				</View>
+				<View className="h-screen w-screen bg-black"></View>
 				<View className="flex-row justify-between items-end p-6 absolute z-10 w-full bottom-0">
 					<View className="flex-row gap-2 items-center">
 						<TouchableOpacity
