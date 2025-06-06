@@ -4,6 +4,7 @@ import { useAuth } from "@/context/auth-context";
 import database from "@/utils/firebase.config";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 import { useRouter } from "expo-router";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { onValue, ref, set } from "firebase/database";
@@ -99,6 +100,7 @@ export default function Control() {
 	const [ripeCount, setRipeCount] = React.useState(0);
 	const [rawCount, setRawCount] = React.useState(0);
 	const [disable, setDisable] = React.useState(false);
+	const [saving, setSaving] = React.useState(false);
 
 	React.useEffect(() => {
 		const unsubscribe = navigation.addListener("focus", () => {
@@ -115,18 +117,19 @@ export default function Control() {
 		return unsubscribe;
 	}, [navigation]);
 
-	// eslint-disable-next-line react-hooks/exhaustive-deps
 	React.useEffect(() => {
 		if (rawCount === 0 || ripeCount === 0) {
 			setDisable(true);
 		} else {
 			setDisable(false);
 		}
+	}, [rawCount, ripeCount]);
 
-		console.log("Wheel: ", rotation);
-		console.log("Wheel: ", wheelDegree);
+	React.useEffect(() => {
 		getRawCount();
 		getRipeCount();
+		console.log("Wheel: ", rotation);
+		console.log("Wheel: ", wheelDegree);
 		setActivePower();
 		setActiveWheel();
 	});
@@ -230,10 +233,42 @@ export default function Control() {
 		return () => subscribe();
 	};
 
+	const resetValue = async () => {
+		const rawValue = ref(database, "detection/raw");
+		const ripeValue = ref(database, "detection/ripe");
+
+		await set(rawValue, 0);
+		await set(ripeValue, 0);
+	};
+
 	const total = rawCount + ripeCount;
 
 	const ripePercentage = total > 0 ? (ripeCount / total) * 100 : 0;
 	const rawPercentage = total > 0 ? (rawCount / total) * 100 : 0;
+
+	console.log(ripeCount, rawCount);
+
+	const handleSave = async () => {
+		setSaving(true);
+
+		await axios
+			.post("http://localhost:3000/api/saveResult", {
+				rawPercentage,
+				ripePercentage,
+				email: userData?.email,
+			})
+			.then((res) => {
+				if (res.status === 201) {
+					resetValue();
+					setSaving(false);
+					setDisable(true);
+				}
+			})
+			.catch((error) => {
+				setSaving(false);
+				console.log(error);
+			});
+	};
 
 	return (
 		<>
@@ -274,11 +309,14 @@ export default function Control() {
 						<View>
 							<TouchableOpacity
 								disabled={disable}
+								onPress={handleSave}
 								className={` p-2 rounded-md ${
 									disable ? "bg-background/70" : "bg-green-500"
 								}`}
 							>
-								<Text className="text-white">Save</Text>
+								<Text className="text-white">
+									{saving ? "Saving..." : "Save"}
+								</Text>
 							</TouchableOpacity>
 						</View>
 					</View>
