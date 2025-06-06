@@ -10,6 +10,7 @@ import * as ScreenOrientation from "expo-screen-orientation";
 import { onValue, ref, set } from "firebase/database";
 import React from "react";
 import {
+	Alert,
 	Animated,
 	Image,
 	Modal,
@@ -248,26 +249,42 @@ export default function Control() {
 
 	console.log(ripeCount, rawCount);
 
+	const data = {
+		ripe: ripeCount,
+		raw: rawCount,
+		email: userData?.email,
+	};
+
 	const handleSave = async () => {
 		setSaving(true);
 
-		await axios
-			.post("http://localhost:3000/api/saveResult", {
-				rawPercentage,
-				ripePercentage,
-				email: userData?.email,
-			})
-			.then((res) => {
-				if (res.status === 201) {
-					resetValue();
-					setSaving(false);
-					setDisable(true);
-				}
-			})
-			.catch((error) => {
-				setSaving(false);
-				console.log(error);
-			});
+		try {
+			await axios
+				.post("https://ripe-sensei-server.vercel.app/api/saveRecords", data)
+				.then((res) => {
+					if (res.status === 201) {
+						resetValue();
+						setSaving(false);
+						setDisable(true);
+						Alert.alert(
+							`✅ Success with status: ${res.status}`,
+							`${res.data.message}`
+						);
+						return;
+					} else {
+						setSaving(false);
+						Alert.alert(
+							`❌ Error with status: ${res.status}`,
+							`${res.data.message}`
+						);
+						return;
+					}
+				});
+		} catch (error) {
+			setSaving(false);
+			Alert.alert(`❌ Error: `, `${error}`);
+			return;
+		}
 	};
 
 	return (
