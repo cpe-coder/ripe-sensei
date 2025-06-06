@@ -1,3 +1,4 @@
+import { ImageViewer } from "@/components";
 import { icon } from "@/constant/icon";
 import { useAuth } from "@/context/auth-context";
 import database from "@/utils/firebase.config";
@@ -17,7 +18,6 @@ import {
 	View,
 	ViewProps,
 } from "react-native";
-import { WebView } from "react-native-webview";
 
 const SLIDER_HEIGHT = 100;
 const MIN_VALUE = 1000;
@@ -99,8 +99,6 @@ export default function Control() {
 
 	const ripeValue = "80%";
 	const rawValue = "20%";
-
-	const streamUrl = "http://192.168.43.191/1280x720.mjpeg";
 
 	React.useEffect(() => {
 		const unsubscribe = navigation.addListener("focus", () => {
@@ -243,15 +241,8 @@ export default function Control() {
 						/>
 					)}
 				</View>
-				<View className="h-screen w-screen bg-black">
-					<WebView
-						source={{ uri: streamUrl }}
-						allowsInlineMediaPlayback
-						javaScriptEnabled
-						domStorageEnabled
-						mediaPlaybackRequiresUserAction={false}
-						className="w-full h-full"
-					/>
+				<View className="h-screen w-screen bg-slate-900">
+					<ImageViewer />
 				</View>
 				<View className="flex-row justify-between items-end p-6 absolute z-10 w-full bottom-0">
 					<View className="flex-row gap-2 items-center">
