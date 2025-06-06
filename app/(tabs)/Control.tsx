@@ -96,8 +96,8 @@ export default function Control() {
 	const [position, setPosition] = React.useState(SLIDER_HEIGHT / 2);
 	const rotation = React.useRef(new Animated.Value(90)).current;
 	const [wheelDegree, setWheelDegree] = React.useState(90);
-	const [lastRotation, setLastRotation] = React.useState(90);
-	const [gestureStartRotation, setGestureStartRotation] = React.useState(90);
+
+	const streamUrl = "https://www.google.com/";
 
 	const ripeValue = "80%";
 	const rawValue = "20%";
@@ -147,29 +147,6 @@ export default function Control() {
 		onPanResponderRelease: () => {},
 	});
 
-	const steeringWheelResponder = PanResponder.create({
-		onStartShouldSetPanResponder: () => true,
-		onMoveShouldSetPanResponder: () => true,
-		onPanResponderGrant: () => {
-			setGestureStartRotation(lastRotation); // Save rotation at gesture start
-		},
-		onPanResponderMove: (_, gestureState) => {
-			const { dx } = gestureState;
-			let newRotation = Math.round(
-				Math.max(0, Math.min(180, gestureStartRotation + dx * 1)) // Increase sensitivity if needed
-			);
-			rotation.setValue(newRotation);
-			setWheelDegree(newRotation);
-		},
-		onPanResponderRelease: (_, gestureState) => {
-			const { dx } = gestureState;
-			let newRotation = Math.round(
-				Math.max(0, Math.min(180, gestureStartRotation + dx * 1))
-			);
-			setLastRotation(newRotation); // Save the new rotation as lastRotation
-		},
-	});
-
 	const setActivePower = async () => {
 		try {
 			const valueRef = ref(database, "Controls/esc");
@@ -178,6 +155,12 @@ export default function Control() {
 			console.log("Error setting power value:", error);
 		}
 	};
+
+	const handleReset = () => {
+		setPower(MID_VALUE);
+		setPosition(SLIDER_HEIGHT / 2);
+	};
+
 	const setActiveWheel = async () => {
 		try {
 			const valueRef = ref(database, "Controls/wheel");
@@ -187,9 +170,39 @@ export default function Control() {
 		}
 	};
 
-	const handleReset = () => {
-		setPower(MID_VALUE);
-		setPosition(SLIDER_HEIGHT / 2);
+	const handleLeft = () => {
+		setWheelDegree((prev) => Math.max(0, prev - 10));
+	};
+
+	const handleRight = () => {
+		setWheelDegree((prev) => Math.min(180, prev + 10));
+	};
+
+	const intervalRef = React.useRef<ReturnType<typeof setInterval> | null>(null);
+
+	const startAutoAdjust = (direction: "left" | "right") => {
+		stopAutoAdjust();
+		intervalRef.current = setInterval(() => {
+			setWheelDegree((prev) => {
+				const next = direction === "left" ? prev - 1 : prev + 1;
+				if (next < 0 || next > 180) {
+					stopAutoAdjust();
+					return prev;
+				}
+				return next;
+			});
+		}, 100);
+	};
+
+	const stopAutoAdjust = () => {
+		if (intervalRef.current) {
+			clearInterval(intervalRef.current);
+			intervalRef.current = null;
+		}
+	};
+
+	const handleResetWheel = () => {
+		setWheelDegree(90);
 	};
 
 	return (
@@ -232,33 +245,40 @@ export default function Control() {
 				</View>
 				<View className="h-screen w-screen">
 					<WebView
-						className="flex-1 bg-white"
-						source={{
-							uri: "http://192.168.43.36",
-						}}
+						source={{ uri: streamUrl }}
+						className="w-full h-full"
+						allowsInlineMediaPlayback
+						mediaPlaybackRequiresUserAction={false}
+						originWhitelist={["*"]}
+						javaScriptEnabled={true}
+						domStorageEnabled={true}
+						mixedContentMode="always"
 					/>
 				</View>
 				<View className="flex-row justify-between items-end p-6 absolute z-10 w-full bottom-0">
-					<View
-						className="w-40 h-40 items-center justify-center -rotate-90"
-						{...steeringWheelResponder.panHandlers}
-					>
-						<Animated.Image
-							source={icon.steeringWheel}
-							height={0}
-							width={0}
-							className="w-40 h-40"
-							style={{
-								transform: [
-									{
-										rotate: rotation.interpolate({
-											inputRange: [0, 180],
-											outputRange: ["0deg", "180deg"],
-										}),
-									},
-								],
-							}}
-						/>
+					<View className="flex-row gap-2 items-center">
+						<TouchableOpacity
+							onPressIn={() => startAutoAdjust("left")}
+							onPressOut={stopAutoAdjust}
+							onPress={handleLeft}
+							className="bg-slate-500 rounded-full p-4"
+						>
+							<Ionicons name="arrow-back" size={24} color="white" />
+						</TouchableOpacity>
+
+						<TouchableOpacity
+							onPress={handleResetWheel}
+							className="bg-green-500 h-10 w-10  rounded-full "
+						></TouchableOpacity>
+
+						<TouchableOpacity
+							onPressIn={() => startAutoAdjust("right")}
+							onPressOut={stopAutoAdjust}
+							onPress={handleRight}
+							className="bg-slate-500 rounded-full p-4"
+						>
+							<Ionicons name="arrow-forward" size={24} color="white" />
+						</TouchableOpacity>
 					</View>
 					<View className="flex justify-end right-0">
 						<TouchableOpacity
