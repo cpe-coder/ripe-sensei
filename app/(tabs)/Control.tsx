@@ -289,7 +289,7 @@ export default function Control() {
 						/>
 					)}
 				</View>
-				<View className="h-screen w-screen bg-slate-900">
+				<View className="h-screen w-screen bg-slate-700">
 					<ImageViewer />
 				</View>
 				<View className="flex-row justify-between items-end p-6 absolute z-10 w-full bottom-0">
