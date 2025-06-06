@@ -6,7 +6,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import * as ScreenOrientation from "expo-screen-orientation";
-import { ref, set } from "firebase/database";
+import { onValue, ref, set } from "firebase/database";
 import React from "react";
 import {
 	Animated,
@@ -96,9 +96,9 @@ export default function Control() {
 	const [position, setPosition] = React.useState(SLIDER_HEIGHT / 2);
 	const rotation = React.useRef(new Animated.Value(90)).current;
 	const [wheelDegree, setWheelDegree] = React.useState(90);
-
-	const ripeValue = "80%";
-	const rawValue = "20%";
+	const [ripeCount, setRipeCount] = React.useState(0);
+	const [rawCount, setRawCount] = React.useState(0);
+	const [disable, setDisable] = React.useState(false);
 
 	React.useEffect(() => {
 		const unsubscribe = navigation.addListener("focus", () => {
@@ -115,10 +115,18 @@ export default function Control() {
 		return unsubscribe;
 	}, [navigation]);
 
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	React.useEffect(() => {
+		if (rawCount === 0 || ripeCount === 0) {
+			setDisable(true);
+		} else {
+			setDisable(false);
+		}
+
 		console.log("Wheel: ", rotation);
 		console.log("Wheel: ", wheelDegree);
-
+		getRawCount();
+		getRipeCount();
 		setActivePower();
 		setActiveWheel();
 	});
@@ -203,6 +211,30 @@ export default function Control() {
 		setWheelDegree(90);
 	};
 
+	const getRawCount = async () => {
+		const valueRef = ref(database, "detection/raw");
+
+		const subscribe = await onValue(valueRef, (snapshot) => {
+			const value = snapshot.val();
+			setRawCount(value);
+		});
+		return () => subscribe();
+	};
+	const getRipeCount = async () => {
+		const valueRef = ref(database, "detection/ripe");
+
+		const subscribe = await onValue(valueRef, (snapshot) => {
+			const value = snapshot.val();
+			setRipeCount(value);
+		});
+		return () => subscribe();
+	};
+
+	const total = rawCount + ripeCount;
+
+	const ripePercentage = total > 0 ? (ripeCount / total) * 100 : 0;
+	const rawPercentage = total > 0 ? (rawCount / total) * 100 : 0;
+
 	return (
 		<>
 			<View className="bg-background h-screen w-screen"></View>
@@ -210,28 +242,44 @@ export default function Control() {
 				<View className="flex-row justify-between items-start px-6 py-2 absolute z-10 w-full">
 					<TouchableOpacity
 						onPress={handleBackPress}
-						className="p-2  bg-background rounded-full"
+						className="p-2  bg-background/70 rounded-full"
 					>
 						<Ionicons name="arrow-back" size={24} color="#00ffb2" />
 					</TouchableOpacity>
-					<View className="flex-col items-start gap-1 justify-center bg-background/70 rounded-lg px-4 py-2">
-						<View className="flex-row gap-2 items-center">
-							<Image
-								source={icon.ripe}
-								height={0}
-								width={0}
-								className="h-7 w-7"
-							/>
-							<Text className="text-primary font-bold">{ripeValue}</Text>
+					<View className="flex-row gap-2 items-center">
+						<View className="flex-col items-start gap-1 justify-center bg-background/70 rounded-lg px-4 py-2">
+							<View className="flex-row gap-2 items-center">
+								<Image
+									source={icon.ripe}
+									height={0}
+									width={0}
+									className="h-7 w-7"
+								/>
+								<Text className="text-primary font-bold">
+									{ripePercentage.toFixed(0)} %
+								</Text>
+							</View>
+							<View className="flex-row gap-2 items-center">
+								<Image
+									source={icon.raw}
+									height={0}
+									width={0}
+									className="h-7 w-7"
+								/>
+								<Text className="text-primary font-bold">
+									{rawPercentage.toFixed(0)} %
+								</Text>
+							</View>
 						</View>
-						<View className="flex-row gap-2 items-center">
-							<Image
-								source={icon.raw}
-								height={0}
-								width={0}
-								className="h-7 w-7"
-							/>
-							<Text className="text-primary font-bold">{rawValue}</Text>
+						<View>
+							<TouchableOpacity
+								disabled={disable}
+								className={` p-2 rounded-md ${
+									disable ? "bg-background/70" : "bg-green-500"
+								}`}
+							>
+								<Text className="text-white">Save</Text>
+							</TouchableOpacity>
 						</View>
 					</View>
 
