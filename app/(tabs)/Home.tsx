@@ -44,7 +44,6 @@ export default function Home() {
 			}
 		} catch (error: any) {
 			console.error(error);
-			Alert.alert("Error", error?.message || "Something went wrong.");
 		} finally {
 			setIsChecking(false);
 		}
