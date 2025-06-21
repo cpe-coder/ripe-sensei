@@ -260,7 +260,10 @@ export default function Control() {
 
 		try {
 			await axios
-				.post("https://ripe-sensei-server.vercel.app/api/saveRecords", data)
+				.post(
+					"https://ripe-sensei-server-9z7p.vercel.app/api/saveRecords",
+					data
+				)
 				.then((res) => {
 					if (res.status === 201) {
 						resetValue();

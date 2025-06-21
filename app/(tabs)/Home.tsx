@@ -33,7 +33,7 @@ export default function Home() {
 			setIsChecking(true);
 
 			const res = await axios.post(
-				"https://ripe-sensei-server.vercel.app/api/getRecords",
+				"https://ripe-sensei-server-9z7p.vercel.app/api/getRecords",
 				{ email: userData?.email }
 			);
 
